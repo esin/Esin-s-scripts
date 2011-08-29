@@ -1,0 +1,9 @@
+export FOFEED_USER_LJ="username"
+export FOFEED_PASS_LJ="password"
+export FOFEED_FRIENDS_LJ="friend1 friend2 friend3"
+export FOFEED_WEB_PATH="/path/to/your/www/directory"
+export FOFEED_DB_FILE="$FOFEED_CURRENT_DIR/$FOFEED_USER_LJ.db"
+export FOFEED_LOG_FILE="$FOFEED_CURRENT_DIR/$FOFEED_USER_LJ.log"
+export FOFEED_USER_AGENT="Friends Only FeeD (FOFeeD) ; gmlastik@gmail.com"
+export FOFEED_DEBUG="1" # Or "1" for more informational output
+export FOFEED_TYPE="rss" # Or "atom"
