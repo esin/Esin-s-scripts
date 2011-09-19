@@ -1,0 +1,37 @@
+#!/bin/bash
+
+recognize()
+{
+ echo `file --mime-type -bpr $1`
+}
+
+parser()
+{
+ echo $(echo -n $1 | cut -d'/' -f2)
+}
+
+choose_act()
+{
+# $1 - filetype
+# $2 - full filename
+# $3 - pretty filename
+
+ if [[ $1 -eq "zip" ]]; then
+  echo "Unziping $3"
+  unzip $2
+ fi
+
+#  if [[ $1 -eq "text" ]]; then
+#  fi
+}
+
+q()
+{
+# echo $1
+ res=$(recognize $1)
+ filetype=$(parser $res)
+ choose_act $filetype $(readlink -f $1) $1
+# echo $res
+}
+
+#q $1
