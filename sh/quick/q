@@ -2,12 +2,13 @@
 
 recognize()
 {
- echo `file --mime-type -bpr $1`
+ echo `file -bpr $1`
 }
 
 parser()
 {
- echo $(echo -n $1 | cut -d'/' -f2)
+ echo -n $1 
+#$(echo -n $1 | cut -d'/' -f2)
 }
 
 choose_act()
@@ -16,22 +17,24 @@ choose_act()
 # $2 - full filename
 # $3 - pretty filename
 
- if [[ $1 -eq "zip" ]]; then
+ if [ $(echo $1 | grep -e "[zZ]ip" | wc -l) -ge "1" ]; then
   echo "Unziping $3"
-  unzip $2
+  unzip -q $2
  fi
 
-#  if [[ $1 -eq "text" ]]; then
-#  fi
+ if [ $(echo $1 | grep -e "\(PE32 executable\)\|\(MS-DOS executable\)" | wc -l) -ge "1" ]; then
+  chmod +x $2
+  wine $2
+ fi
+
+#  "x-empty"
+#   echo "$3 is empty"
+# 
 }
 
 q()
 {
-# echo $1
  res=$(recognize $1)
  filetype=$(parser $res)
- choose_act $filetype $(readlink -f $1) $1
-# echo $res
+ choose_act "$res" "$(readlink -f $1)" "$1"
 }
-
-#q $1
