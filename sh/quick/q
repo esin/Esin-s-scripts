@@ -27,10 +27,21 @@ choose_act()
   unrar -inul x $2
  fi
 
+ if [ $(echo $1 | grep -e "gzip compressed data" | wc -l) -ge "1" ]; then
+  echo "Ungziping..."
+  gzip -d $2
+ fi
+
+ if [ $(echo $1 | grep -e "bzip2 compressed data" | wc -l) -ge "1" ]; then
+  echo "Unbziping..."
+  bzip2 -d $2
+ fi
+
  if [ $(echo $1 | grep -e "\(PE32 executable\)\|\(MS-DOS executable\)" | wc -l) -ge "1" ]; then
-  chmod +x $2
+  echo "Running in wine..."
   wine $2
  fi
+
 
 #  "x-empty"
 #   echo "$3 is empty"
