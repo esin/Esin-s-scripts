@@ -22,6 +22,11 @@ choose_act()
   unzip -q $2
  fi
 
+ if [ $(echo $1 | grep -e "RAR" | wc -l) -ge "1" ]; then
+  echo "Unraring $3"
+  unrar -inul x $2
+ fi
+
  if [ $(echo $1 | grep -e "\(PE32 executable\)\|\(MS-DOS executable\)" | wc -l) -ge "1" ]; then
   chmod +x $2
   wine $2
