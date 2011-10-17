@@ -17,24 +17,28 @@ choose_act()
 # $2 - full filename
 # $3 - pretty filename
 
- if [ $(echo $1 | grep -e "[zZ]ip" | wc -l) -ge "1" ]; then
+ if [ $(echo $1 | grep "Zip archive data" | wc -l) -ge "1" ]; then
   echo "Unziping $3"
   unzip -q $2
  fi
 
- if [ $(echo $1 | grep -e "RAR" | wc -l) -ge "1" ]; then
+ if [ $(echo $1 | grep "RAR" | wc -l) -ge "1" ]; then
   echo "Unraring $3"
   unrar -inul x $2
  fi
 
- if [ $(echo $1 | grep -e "gzip compressed data" | wc -l) -ge "1" ]; then
+ if [ $(echo $1 | grep "gzip compressed data" | wc -l) -ge "1" ]; then
   echo "Ungziping..."
   gzip -d $2
  fi
 
- if [ $(echo $1 | grep -e "bzip2 compressed data" | wc -l) -ge "1" ]; then
+ if [ $(echo $1 | grep "bzip2 compressed data" | wc -l) -ge "1" ]; then
   echo "Unbziping..."
-  bzip2 -d $2
+  if [ $(echo $3 | grep -i "tar.bz2" | wc -l) -eq "1" ]; then
+    tar xjf $2
+  else
+    bzip2 -d $2
+  fi
  fi
 
  if [ $(echo $1 | grep -e "\(PE32 executable\)\|\(MS-DOS executable\)" | wc -l) -ge "1" ]; then
@@ -42,14 +46,34 @@ choose_act()
   wine $2
  fi
 
+ if [ $(echo $1 | grep -e "Bourne-Again shell script" | wc -l) -ge "1" ]; then
+  echo "Bash script..."
+  /bin/bash $2
+ fi
+
+ if [ $(echo $1 | grep -e "PHP script " | wc -l) -ge "1" ]; then
+  echo "PHP script..."
+  php -e $2
+ fi
+
+
 
 #  "x-empty"
 #   echo "$3 is empty"
 # 
 }
 
+usage()
+{
+ echo "Usage of (q)uick:"
+ echo "q filename"
+}
 q()
 {
+ if [ $# -eq 0 ]; then
+  usage
+  return
+ fi
  res=$(recognize $1)
  filetype=$(parser $res)
  choose_act "$res" "$(readlink -f $1)" "$1"
