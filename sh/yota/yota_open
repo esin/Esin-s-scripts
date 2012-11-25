@@ -8,4 +8,9 @@ if [ $IS_302 -eq "1" ]; then
    -D > /dev/null --retry 100000 --retry-delay 1 \
    --silent --compressed \
    --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=sa&service_id=Service_Access_Temp"
+
+  curl http://hello.yota.ru/php/go.php \
+   -D > /dev/null --retry 100000 --retry-delay 1 \
+   --silent --compressed \
+   --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=light&service_id=Sliders_Free_Temp"
 fi
