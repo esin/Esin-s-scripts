@@ -10,13 +10,17 @@ FILE_LIST=$(ls --time-style=$DATE_FORMAT /bin -tlQnoGgAr --block-size=1E | grep 
 
 for each in $DATE_LIST;
 do
- mkdir -p 1/$each;
+ #mkdir -p 1/$each;
+ echo $each
+ find /bin -type f -exec ls -l {} \; |  grep $each 
 done
 
-for each in $FILE_LIST;
-do
- echo "/bin/$each"
-done
+#find /bin -type f -exec mkdir
+
+#for each in $FILE_LIST;
+#do
+# echo "/bin/$each"
+#done
 
 exit
 #echo $DATE_LIST
