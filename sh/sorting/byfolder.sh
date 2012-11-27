@@ -3,8 +3,19 @@
 # %m - number of month
 # %d - date of month
 
-PARSE_DIR=/bin
-COPY_TO=1
+function usage() {
+  echo "Usage: `basename $0` 'Dir to parse files' 'Dir to copy files' "
+  exit
+}
+
+PARSE_DIR=$1
+COPY_TO=$2
+
+if [ $# -ne 2 ]
+then
+  usage
+fi
+
 DATE_FORMAT=+%Y-%m-%d
 LS_PARAMS="--time-style=$DATE_FORMAT -tlnoGgAr --block-size=1E"
 DATE_LIST=$(ls $PARSE_DIR $LS_PARAMS | grep -v ^d | grep -v ^l |cut -f4 -d' ' | sort -u | grep -v ^$)
