@@ -23,6 +23,6 @@ DATE_LIST=$(ls $PARSE_DIR $LS_PARAMS | grep -v ^d | grep -v ^l |cut -f4 -d' ' | 
 for each in $DATE_LIST;
 do
  mkdir -p $COPY_TO/$each;
- echo $each
- cp -pv `find $PARSE_DIR -type f -exec ls {} $LS_PARAMS \; | grep $each | grep -v ^d | grep -v ^l | cut -f5 -d' ' | sort -u | grep -v ^$` $COPY_TO/$each
+ echo "Date: $each"
+ cp -p `find $PARSE_DIR -type f -exec ls {} $LS_PARAMS \; | grep $each | grep -v ^d | grep -v ^l | cut -f5 -d' ' | sort -u | grep -v ^$` $COPY_TO/$each
 done
