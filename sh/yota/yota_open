@@ -10,4 +10,7 @@ if [ $IS_302 -eq "1" ]; then
 
   curl http://hello.yota.ru/php/go.php $CURL_OPTS \
    --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=light&service_id=Sliders_Free_Temp"
+
+  curl https://startwifi.beeline.ru/status $CURL_OPTS \
+   --data "lang=ru&screen=pda&url=http://127.0.0.1&redirect=1"
 fi
