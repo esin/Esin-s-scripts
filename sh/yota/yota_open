@@ -14,3 +14,5 @@ if [ $IS_302 -eq "1" ]; then
   curl https://startwifi.beeline.ru/status $CURL_OPTS \
    --data "lang=ru&screen=pda&url=http://127.0.0.1&redirect=1"
 fi
+
+exit 0
