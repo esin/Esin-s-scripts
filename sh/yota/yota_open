@@ -4,7 +4,6 @@ BLANK_PAGE=http://raw.github.com/esin/Esin-s-scripts/master/sh/yota/blank.html
 CURL_OPTS='--retry 100000 --retry-delay 1 --silent --compressed' # --user-agent Opera/9.80 (X11; Linux i686; U; ru) Presto/2.9.168 Version/11.51'
 HEADER_DUMP=`mktemp`
 
-echo $HEADER_DUMP
 curl $BLANK_PAGE $CURL_OPTS --dump-header $HEADER_DUMP
 
 # Beeline WiFi Free. Mega
