@@ -1,18 +1,41 @@
 #!/bin/bash
 
 BLANK_PAGE=http://raw.github.com/esin/Esin-s-scripts/master/sh/yota/blank.html
-IS_302=`curl $BLANK_PAGE --retry 100000 --retry-delay 1 --silent --compressed --dump-header - | grep "HTTP/1.1 302 Found" | wc -l`
+CURL_OPTS='--retry 100000 --retry-delay 1 --silent --compressed'
+HEADER_DUMP=`mktemp`
 
-CURL_OPTS='-D > /dev/null --retry 100000 --retry-delay 1 --silent --compressed'
-if [ $IS_302 -eq "1" ]; then
-  curl http://hello.yota.ru/php/go.php $CURL_OPTS \
-   --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=sa&service_id=Service_Access_Temp"
+curl $BLANK_PAGE $CURL_OPTS --dump-header $HEADER_DUMP
 
-  curl http://hello.yota.ru/php/go.php $CURL_OPTS \
-   --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=light&service_id=Sliders_Free_Temp"
-
-  curl https://startwifi.beeline.ru/status $CURL_OPTS \
-   --data "lang=ru&screen=pda&url=http://127.0.0.1&redirect=1"
+# Beeline WiFi Free. Mega
+if grep -e "HTTP/1.1 302 " -e "Location: http://startwifi.beeline.ru" $HEADER_DUMP
+    curl https://startwifi.beeline.ru/status $CURL_OPTS \
+   --data "lang=ru&screen=normal&url=http://127.0.0.1&mode=device&submode=tcmega"
 fi
+
+# Beeline WiFi Free
+if grep -e "HTTP/1.1 302 " -e "Location: http://startwifi.beeline.ru" $HEADER_DUMP
+  curl https://startwifi.beeline.ru/status $CURL_OPTS \
+  --data "lang=ru&screen=pda&url=http://127.0.0.1&redirect=1"
+fi
+
+#Yota. Msk
+if grep -e "HTTP/1.1 302 Found" $HEADER_DUMP
+  curl http://hello.yota.ru/php/go.php $CURL_OPTS \
+  --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=sa&service_id=Service_Access_Temp"
+
+  curl http://hello.yota.ru/php/go.php $CURL_OPTS \
+  --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=light&service_id=Sliders_Free_Temp"
+fi
+
+#if [ $IS_302 -eq "1" ]; then
+#  curl http://hello.yota.ru/php/go.php $CURL_OPTS \
+#   --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=sa&service_id=Service_Access_Temp"
+#
+#  curl http://hello.yota.ru/php/go.php $CURL_OPTS \
+#   --data "accept_lte=1&redirurl=http://www.yota.ru/&city=msk&connection_type=light&service_id=Sliders_Free_Temp"
+#
+#  curl https://startwifi.beeline.ru/status $CURL_OPTS \
+#   --data "lang=ru&screen=pda&url=http://127.0.0.1&redirect=1"
+#fi
 
 exit 0
